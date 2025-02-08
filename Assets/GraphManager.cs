@@ -86,28 +86,33 @@ public class GraphManager : MonoBehaviour
         // Create and cache the fallback prefab only once.
         fallbackNodePrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         fallbackNodePrefab.SetActive(false); // Hide it so it doesn't appear in the scene.
-        // Initialize empty graph
-        graph = new Graph();
 
-        // Load and parse graph definition
-        string jsonText = graphDefinition != null
-            ? graphDefinition.text
-            : Resources.Load<TextAsset>("graph_definition").text;
+        // Build the graph from the JSON file.
+        GraphBuilder builder = GetComponent<GraphBuilder>();
+        graph = builder.BuildGraphFromJson();
 
-        GraphDefinition definition = JsonUtility.FromJson<GraphDefinition>(jsonText);
+        // // Initialize empty graph
+        // graph = new Graph();
 
-        // First pass: Add all nodes
-        foreach (var node in definition.nodes)
-        {
-            if (string.IsNullOrEmpty(node.parent))
-            {
-                graph.AddNode(node.id, null, node.type);
-            }
-            else
-            {
-                graph.AddNode(node.id, node.parent, node.type);
-            }
-        }
+        // // Load and parse graph definition
+        // string jsonText = graphDefinition != null
+        //     ? graphDefinition.text
+        //     : Resources.Load<TextAsset>("graph_definition").text;
+
+        // GraphDefinition definition = JsonUtility.FromJson<GraphDefinition>(jsonText);
+
+        // // First pass: Add all nodes
+        // foreach (var node in definition.nodes)
+        // {
+        //     if (string.IsNullOrEmpty(node.parent))
+        //     {
+        //         graph.AddNode(node.id, null, node.type);
+        //     }
+        //     else
+        //     {
+        //         graph.AddNode(node.id, node.parent, node.type);
+        //     }
+        // }
 
         // 1. Group nodes by their computed layer.
         Dictionary<int, List<GraphNode>> layers = ComputeLayers();
@@ -210,7 +215,7 @@ public class GraphManager : MonoBehaviour
                 siblingGroups[parentId].Add(node);
             }
 
-            // Helper: a temporary structure to hold each group’s desired layout.
+            // Helper: a temporary structure to hold each group's desired layout.
             List<SiblingGroup> groups = new List<SiblingGroup>();
             float effectiveSpacing = gridSpacing * siblingSpacingMultiplier;
             // Define a minimum group width (you can adjust this value).
@@ -221,7 +226,16 @@ public class GraphManager : MonoBehaviour
                 SiblingGroup group = new SiblingGroup();
                 group.parentId = groupKvp.Key;
                 group.children = groupKvp.Value;
-                group.parentPos = computedPositions[group.children[0].parent];
+
+                // Ensure the parent's position exists in computedPositions
+                GraphNode parentNode = group.children[0].parent;
+                if (!computedPositions.ContainsKey(parentNode))
+                {
+                    Debug.LogWarning($"Parent position not found for node {parentNode.id}. Using default position.");
+                    computedPositions[parentNode] = Vector3.zero;
+                }
+
+                group.parentPos = computedPositions[parentNode];
                 group.childY = layerIndex * layerSpacing;
 
                 // Compute desired positions for this group.
@@ -439,13 +453,22 @@ public class GraphManager : MonoBehaviour
 
                 rend.material = materialToUse;
             }
-            // Update the NodeInfo component with the node's type.
+            // Update the NodeInfo component with the node's information
             NodeInfo nodeInfo = nodeObj.GetComponent<NodeInfo>();
             if (nodeInfo != null)
             {
                 nodeInfo.nodeType = type;
                 nodeInfo.nodeID = node.id;
+                nodeInfo.name = node.name;
 
+                // Copy attributes
+                if (node.attributes != null)
+                {
+                    foreach (var attr in node.attributes)
+                    {
+                        nodeInfo.attributes[attr.Key] = attr.Value;
+                    }
+                }
             }
         }
 

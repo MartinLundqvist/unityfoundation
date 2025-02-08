@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using System.Collections.Generic;
 public class GraphNode
@@ -9,6 +8,9 @@ public class GraphNode
     // Type ("root", "sensor", "asset", "compute")
     public string nodeType;
 
+    // Name of the node
+    public string name;
+
     // Reference to the parent node (null if this is a root node).
     public GraphNode parent;
 
@@ -16,13 +18,16 @@ public class GraphNode
     public List<GraphNode> children;
 
     // (Optional) Additional metadata can be added here.
+    public Dictionary<string, string> attributes;  // Store attributes as name-value pairs
 
-    public GraphNode(string id, string nodeType)
+    public GraphNode(string id, string name, string nodeType)
     {
         this.id = id;
         this.nodeType = nodeType;
+        this.name = name;
         parent = null;
         children = new List<GraphNode>();
+        attributes = new Dictionary<string, string>();
     }
 }
 
@@ -39,28 +44,27 @@ public class Graph
     // Create and add a new node to the graph.
     // If a parentId is provided, the new node becomes a child of the parent.
     // Returns true if the node was successfully added.
-    public bool AddNode(string id, string parentId = null, string nodeType = null)
+    public bool AddNode(GraphNode node)
     {
-        if (nodes.ContainsKey(id))
+        if (nodes.ContainsKey(node.id))
         {
-            Debug.LogWarning("AddNode failed: A node with id '" + id + "' already exists.");
+            Debug.LogWarning("AddNode failed: A node with id '" + node.id + "' already exists.");
             return false;
         }
 
-        GraphNode newNode = new GraphNode(id, nodeType);
-        nodes.Add(id, newNode);
+        nodes.Add(node.id, node);
 
         // If a parent is specified, assign the parent–child relationship.
-        if (!string.IsNullOrEmpty(parentId))
+        if (node.parent != null)
         {
-            if (nodes.TryGetValue(parentId, out GraphNode parentNode))
+            if (nodes.TryGetValue(node.parent.id, out GraphNode parentNode))
             {
-                newNode.parent = parentNode;
-                parentNode.children.Add(newNode);
+                node.parent = parentNode;
+                parentNode.children.Add(node);
             }
             else
             {
-                Debug.LogWarning("AddNode warning: Parent with id '" + parentId + "' not found. New node will be a root node.");
+                Debug.LogWarning("AddNode warning: Parent with id '" + node.parent.id + "' not found. New node will be a root node.");
             }
         }
 

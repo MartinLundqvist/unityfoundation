@@ -25,7 +25,6 @@ public class NodeClickHandler : MonoBehaviour
                 if (highlight != null)
                 {
                     highlight.StartHighlight();
-
                 }
                 // Check if the hit object has a component that contains node info.
                 // For this example, assume each node object has a NodeInfo component.
@@ -41,11 +40,27 @@ public class NodeClickHandler : MonoBehaviour
 
     void ShowNodeInfo(NodeInfo nodeInfo)
     {
-        // Build your info string. Customize as needed.
-        string info = $"ID: {nodeInfo.nodeID}\n" +
-                      $"Type: {nodeInfo.nodeType}\n" +
-                      $"Additional Info: {nodeInfo.description}";
-        infoText.text = info;
+        System.Text.StringBuilder info = new System.Text.StringBuilder();
+        info.AppendLine($"ID: {nodeInfo.nodeID}");
+        info.AppendLine($"Type: {nodeInfo.nodeType}");
+        info.AppendLine($"Name: {nodeInfo.name}");
+
+        if (!string.IsNullOrEmpty(nodeInfo.description))
+        {
+            info.AppendLine($"Description: {nodeInfo.description}");
+        }
+
+        // Add attributes section if there are any
+        if (nodeInfo.attributes != null && nodeInfo.attributes.Count > 0)
+        {
+            info.AppendLine("\nAttributes:");
+            foreach (var attr in nodeInfo.attributes)
+            {
+                info.AppendLine($"  {attr.Key}: {attr.Value}");
+            }
+        }
+
+        infoText.text = info.ToString();
         infoPanel.SetActive(true);
     }
 }
