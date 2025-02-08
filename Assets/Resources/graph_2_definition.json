@@ -1,0 +1,629 @@
+{
+    "nodes": [
+      {
+        "id": "Cosmos",
+        "parent": null,
+        "type": "asset"
+      },
+      {
+        "id": "PhysicalRealm",
+        "parent": "Cosmos",
+        "type": "asset"
+      },
+      {
+        "id": "DigitalRealm",
+        "parent": "Cosmos",
+        "type": "asset"
+      },
+      {
+        "id": "MythicalRealm",
+        "parent": "Cosmos",
+        "type": "asset"
+      },
+      {
+        "id": "Universe_A",
+        "parent": "PhysicalRealm",
+        "type": "asset"
+      },
+      {
+        "id": "Universe_B",
+        "parent": "PhysicalRealm",
+        "type": "sensor"
+      },
+      {
+        "id": "Universe_C",
+        "parent": "PhysicalRealm",
+        "type": "sensor"
+      },
+      {
+        "id": "MilkyWay",
+        "parent": "Universe_A",
+        "type": "asset"
+      },
+      {
+        "id": "Andromeda",
+        "parent": "Universe_A",
+        "type": "sensor"
+      },
+      {
+        "id": "Triangulum",
+        "parent": "Universe_A",
+        "type": "sensor"
+      },
+      {
+        "id": "SolarSystem",
+        "parent": "MilkyWay",
+        "type": "asset"
+      },
+      {
+        "id": "AlphaCentauri",
+        "parent": "MilkyWay",
+        "type": "sensor"
+      },
+      {
+        "id": "Sirius",
+        "parent": "MilkyWay",
+        "type": "sensor"
+      },
+      {
+        "id": "Mercury",
+        "parent": "SolarSystem",
+        "type": "sensor"
+      },
+      {
+        "id": "Venus",
+        "parent": "SolarSystem",
+        "type": "sensor"
+      },
+      {
+        "id": "Earth",
+        "parent": "SolarSystem",
+        "type": "asset"
+      },
+      {
+        "id": "Mars",
+        "parent": "SolarSystem",
+        "type": "asset"
+      },
+      {
+        "id": "Jupiter",
+        "parent": "SolarSystem",
+        "type": "asset"
+      },
+      {
+        "id": "Saturn",
+        "parent": "SolarSystem",
+        "type": "asset"
+      },
+      {
+        "id": "Uranus",
+        "parent": "SolarSystem",
+        "type": "sensor"
+      },
+      {
+        "id": "Neptune",
+        "parent": "SolarSystem",
+        "type": "asset"
+      },
+      {
+        "id": "NorthAmerica",
+        "parent": "Earth",
+        "type": "asset"
+      },
+      {
+        "id": "SouthAmerica",
+        "parent": "Earth",
+        "type": "asset"
+      },
+      {
+        "id": "Europe",
+        "parent": "Earth",
+        "type": "asset"
+      },
+      {
+        "id": "Asia",
+        "parent": "Earth",
+        "type": "asset"
+      },
+      {
+        "id": "Africa",
+        "parent": "Earth",
+        "type": "asset"
+      },
+      {
+        "id": "Oceania",
+        "parent": "Earth",
+        "type": "asset"
+      },
+      {
+        "id": "Antarctica",
+        "parent": "Earth",
+        "type": "sensor"
+      },
+      {
+        "id": "Quantum_Network",
+        "parent": "DigitalRealm",
+        "type": "asset"
+      },
+      {
+        "id": "Neural_Grid",
+        "parent": "DigitalRealm",
+        "type": "sensor"
+      },
+      {
+        "id": "Cyber_Nexus",
+        "parent": "DigitalRealm",
+        "type": "sensor"
+      },
+      {
+        "id": "DataCore_Alpha",
+        "parent": "Quantum_Network",
+        "type": "asset"
+      },
+      {
+        "id": "DataCore_Beta",
+        "parent": "Quantum_Network",
+        "type": "asset"
+      },
+      {
+        "id": "DataCore_Gamma",
+        "parent": "Quantum_Network",
+        "type": "asset"
+      },
+      {
+        "id": "GreekPantheon",
+        "parent": "MythicalRealm",
+        "type": "asset"
+      },
+      {
+        "id": "NorsePantheon",
+        "parent": "MythicalRealm",
+        "type": "asset"
+      },
+      {
+        "id": "EgyptianPantheon",
+        "parent": "MythicalRealm",
+        "type": "asset"
+      },
+      {
+        "id": "USA",
+        "parent": "NorthAmerica",
+        "type": "asset"
+      },
+      {
+        "id": "Canada",
+        "parent": "NorthAmerica",
+        "type": "asset"
+      },
+      {
+        "id": "Mexico",
+        "parent": "NorthAmerica",
+        "type": "asset"
+      },
+      {
+        "id": "Brazil",
+        "parent": "SouthAmerica",
+        "type": "asset"
+      },
+      {
+        "id": "Argentina",
+        "parent": "SouthAmerica",
+        "type": "asset"
+      },
+      {
+        "id": "Peru",
+        "parent": "SouthAmerica",
+        "type": "asset"
+      },
+      {
+        "id": "Germany",
+        "parent": "Europe",
+        "type": "asset"
+      },
+      {
+        "id": "France",
+        "parent": "Europe",
+        "type": "asset"
+      },
+      {
+        "id": "UK",
+        "parent": "Europe",
+        "type": "asset"
+      },
+      {
+        "id": "Italy",
+        "parent": "Europe",
+        "type": "asset"
+      },
+      {
+        "id": "Spain",
+        "parent": "Europe",
+        "type": "asset"
+      },
+      {
+        "id": "China",
+        "parent": "Asia",
+        "type": "asset"
+      },
+      {
+        "id": "Japan",
+        "parent": "Asia",
+        "type": "asset"
+      },
+      {
+        "id": "India",
+        "parent": "Asia",
+        "type": "asset"
+      },
+      {
+        "id": "Russia",
+        "parent": "Asia",
+        "type": "asset"
+      },
+      {
+        "id": "Egypt",
+        "parent": "Africa",
+        "type": "asset"
+      },
+      {
+        "id": "Nigeria",
+        "parent": "Africa",
+        "type": "asset"
+      },
+      {
+        "id": "SouthAfrica",
+        "parent": "Africa",
+        "type": "asset"
+      },
+      {
+        "id": "Kenya",
+        "parent": "Africa",
+        "type": "asset"
+      },
+      {
+        "id": "Australia",
+        "parent": "Oceania",
+        "type": "asset"
+      },
+      {
+        "id": "NewZealand",
+        "parent": "Oceania",
+        "type": "asset"
+      },
+      {
+        "id": "Zeus",
+        "parent": "GreekPantheon",
+        "type": "sensor"
+      },
+      {
+        "id": "Poseidon",
+        "parent": "GreekPantheon",
+        "type": "sensor"
+      },
+      {
+        "id": "Hades",
+        "parent": "GreekPantheon",
+        "type": "sensor"
+      },
+      {
+        "id": "Odin",
+        "parent": "NorsePantheon",
+        "type": "sensor"
+      },
+      {
+        "id": "Thor",
+        "parent": "NorsePantheon",
+        "type": "sensor"
+      },
+      {
+        "id": "Loki",
+        "parent": "NorsePantheon",
+        "type": "sensor"
+      },
+      {
+        "id": "Ra",
+        "parent": "EgyptianPantheon",
+        "type": "sensor"
+      },
+      {
+        "id": "Osiris",
+        "parent": "EgyptianPantheon",
+        "type": "sensor"
+      },
+      {
+        "id": "Isis",
+        "parent": "EgyptianPantheon",
+        "type": "sensor"
+      },
+      {
+        "id": "NewYork",
+        "parent": "USA",
+        "type": "asset"
+      },
+      {
+        "id": "LosAngeles",
+        "parent": "USA",
+        "type": "asset"
+      },
+      {
+        "id": "Chicago",
+        "parent": "USA",
+        "type": "sensor"
+      },
+      {
+        "id": "Toronto",
+        "parent": "Canada",
+        "type": "sensor"
+      },
+      {
+        "id": "Vancouver",
+        "parent": "Canada",
+        "type": "sensor"
+      },
+      {
+        "id": "MexicoCity",
+        "parent": "Mexico",
+        "type": "sensor"
+      },
+      {
+        "id": "Cancun",
+        "parent": "Mexico",
+        "type": "sensor"
+      },
+      {
+        "id": "SaoPaulo",
+        "parent": "Brazil",
+        "type": "sensor"
+      },
+      {
+        "id": "RioDeJaneiro",
+        "parent": "Brazil",
+        "type": "sensor"
+      },
+      {
+        "id": "BuenosAires",
+        "parent": "Argentina",
+        "type": "sensor"
+      },
+      {
+        "id": "Lima",
+        "parent": "Peru",
+        "type": "sensor"
+      },
+      {
+        "id": "Berlin",
+        "parent": "Germany",
+        "type": "sensor"
+      },
+      {
+        "id": "Munich",
+        "parent": "Germany",
+        "type": "sensor"
+      },
+      {
+        "id": "Paris",
+        "parent": "France",
+        "type": "sensor"
+      },
+      {
+        "id": "Lyon",
+        "parent": "France",
+        "type": "sensor"
+      },
+      {
+        "id": "London",
+        "parent": "UK",
+        "type": "sensor"
+      },
+      {
+        "id": "Manchester",
+        "parent": "UK",
+        "type": "sensor"
+      },
+      {
+        "id": "Rome",
+        "parent": "Italy",
+        "type": "sensor"
+      },
+      {
+        "id": "Milan",
+        "parent": "Italy",
+        "type": "sensor"
+      },
+      {
+        "id": "Madrid",
+        "parent": "Spain",
+        "type": "sensor"
+      },
+      {
+        "id": "Barcelona",
+        "parent": "Spain",
+        "type": "sensor"
+      },
+      {
+        "id": "Beijing",
+        "parent": "China",
+        "type": "sensor"
+      },
+      {
+        "id": "Shanghai",
+        "parent": "China",
+        "type": "sensor"
+      },
+      {
+        "id": "Tokyo",
+        "parent": "Japan",
+        "type": "sensor"
+      },
+      {
+        "id": "Osaka",
+        "parent": "Japan",
+        "type": "sensor"
+      },
+      {
+        "id": "Mumbai",
+        "parent": "India",
+        "type": "sensor"
+      },
+      {
+        "id": "Delhi",
+        "parent": "India",
+        "type": "sensor"
+      },
+      {
+        "id": "Moscow",
+        "parent": "Russia",
+        "type": "sensor"
+      },
+      {
+        "id": "SaintPetersburg",
+        "parent": "Russia",
+        "type": "sensor"
+      },
+      {
+        "id": "Cairo",
+        "parent": "Egypt",
+        "type": "sensor"
+      },
+      {
+        "id": "Alexandria",
+        "parent": "Egypt",
+        "type": "sensor"
+      },
+      {
+        "id": "Lagos",
+        "parent": "Nigeria",
+        "type": "sensor"
+      },
+      {
+        "id": "Abuja",
+        "parent": "Nigeria",
+        "type": "sensor"
+      },
+      {
+        "id": "CapeTown",
+        "parent": "SouthAfrica",
+        "type": "sensor"
+      },
+      {
+        "id": "Johannesburg",
+        "parent": "SouthAfrica",
+        "type": "sensor"
+      },
+      {
+        "id": "Nairobi",
+        "parent": "Kenya",
+        "type": "sensor"
+      },
+      {
+        "id": "Mombasa",
+        "parent": "Kenya",
+        "type": "sensor"
+      },
+      {
+        "id": "Sydney",
+        "parent": "Australia",
+        "type": "sensor"
+      },
+      {
+        "id": "Melbourne",
+        "parent": "Australia",
+        "type": "sensor"
+      },
+      {
+        "id": "Auckland",
+        "parent": "NewZealand",
+        "type": "sensor"
+      },
+      {
+        "id": "Wellington",
+        "parent": "NewZealand",
+        "type": "sensor"
+      },
+      {
+        "id": "Manhattan",
+        "parent": "NewYork",
+        "type": "sensor"
+      },
+      {
+        "id": "Brooklyn",
+        "parent": "NewYork",
+        "type": "sensor"
+      },
+      {
+        "id": "Hollywood",
+        "parent": "LosAngeles",
+        "type": "sensor"
+      },
+      {
+        "id": "SantaMonica",
+        "parent": "LosAngeles",
+        "type": "sensor"
+      },
+      {
+        "id": "QuantumProcessor_1",
+        "parent": "DataCore_Alpha",
+        "type": "sensor"
+      },
+      {
+        "id": "QuantumProcessor_2",
+        "parent": "DataCore_Alpha",
+        "type": "sensor"
+      },
+      {
+        "id": "QuantumProcessor_3",
+        "parent": "DataCore_Beta",
+        "type": "sensor"
+      },
+      {
+        "id": "QuantumProcessor_4",
+        "parent": "DataCore_Beta",
+        "type": "sensor"
+      },
+      {
+        "id": "QuantumProcessor_5",
+        "parent": "DataCore_Gamma",
+        "type": "sensor"
+      },
+      {
+        "id": "Phobos",
+        "parent": "Mars",
+        "type": "sensor"
+      },
+      {
+        "id": "Deimos",
+        "parent": "Mars",
+        "type": "sensor"
+      },
+      {
+        "id": "Europa",
+        "parent": "Jupiter",
+        "type": "sensor"
+      },
+      {
+        "id": "Io",
+        "parent": "Jupiter",
+        "type": "sensor"
+      },
+      {
+        "id": "Ganymede",
+        "parent": "Jupiter",
+        "type": "sensor"
+      },
+      {
+        "id": "Titan",
+        "parent": "Saturn",
+        "type": "sensor"
+      },
+      {
+        "id": "Enceladus",
+        "parent": "Saturn",
+        "type": "sensor"
+      },
+      {
+        "id": "Triton",
+        "parent": "Neptune",
+        "type": "sensor"
+      }
+    ]
+  }

@@ -1,0 +1,134 @@
+{
+  "nodes": [
+    {
+      "id": "A",
+      "parent": null,
+      "type": "asset"
+    },
+    {
+      "id": "B",
+      "parent": "A",
+      "type": "asset"
+    },
+    {
+      "id": "C",
+      "parent": "A",
+      "type": "asset"
+    },
+    {
+      "id": "D",
+      "parent": "B",
+      "type": "asset"
+    },
+    {
+      "id": "E",
+      "parent": "B",
+      "type": "asset"
+    },
+    {
+      "id": "F",
+      "parent": "C",
+      "type": "asset"
+    },
+    {
+      "id": "G",
+      "parent": "C",
+      "type": "asset"
+    },
+    {
+      "id": "H",
+      "parent": "D",
+      "type": "asset"
+    },
+    {
+      "id": "I",
+      "parent": "D",
+      "type": "asset"
+    },
+    {
+      "id": "J",
+      "parent": "E",
+      "type": "sensor"
+    },
+    {
+      "id": "K",
+      "parent": "F",
+      "type": "asset"
+    },
+    {
+      "id": "L",
+      "parent": "F",
+      "type": "asset"
+    },
+    {
+      "id": "M",
+      "parent": "G",
+      "type": "asset"
+    },
+    {
+      "id": "N",
+      "parent": "H",
+      "type": "asset"
+    },
+    {
+      "id": "O",
+      "parent": "H",
+      "type": "sensor"
+    },
+    {
+      "id": "P",
+      "parent": "I",
+      "type": "asset"
+    },
+    {
+      "id": "Y",
+      "parent": "I",
+      "type": "sensor"
+    },
+    {
+      "id": "Z",
+      "parent": "I",
+      "type": "sensor"
+    },
+    {
+      "id": "Q",
+      "parent": "K",
+      "type": "asset"
+    },
+    {
+      "id": "R",
+      "parent": "L",
+      "type": "sensor"
+    },
+    {
+      "id": "S",
+      "parent": "M",
+      "type": "asset"
+    },
+    {
+      "id": "T",
+      "parent": "N",
+      "type": "asset"
+    },
+    {
+      "id": "U",
+      "parent": "P",
+      "type": "sensor"
+    },
+    {
+      "id": "V",
+      "parent": "Q",
+      "type": "sensor"
+    },
+    {
+      "id": "W",
+      "parent": "S",
+      "type": "sensor"
+    },
+    {
+      "id": "X",
+      "parent": "T",
+      "type": "sensor"
+    }
+  ]
+} 

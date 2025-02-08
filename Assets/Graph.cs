@@ -6,6 +6,9 @@ public class GraphNode
     // A unique identifier for the node.
     public string id;
 
+    // Type ("root", "sensor", "asset", "compute")
+    public string nodeType;
+
     // Reference to the parent node (null if this is a root node).
     public GraphNode parent;
 
@@ -14,9 +17,10 @@ public class GraphNode
 
     // (Optional) Additional metadata can be added here.
 
-    public GraphNode(string id)
+    public GraphNode(string id, string nodeType)
     {
         this.id = id;
+        this.nodeType = nodeType;
         parent = null;
         children = new List<GraphNode>();
     }
@@ -35,7 +39,7 @@ public class Graph
     // Create and add a new node to the graph.
     // If a parentId is provided, the new node becomes a child of the parent.
     // Returns true if the node was successfully added.
-    public bool AddNode(string id, string parentId = null)
+    public bool AddNode(string id, string parentId = null, string nodeType = null)
     {
         if (nodes.ContainsKey(id))
         {
@@ -43,7 +47,7 @@ public class Graph
             return false;
         }
 
-        GraphNode newNode = new GraphNode(id);
+        GraphNode newNode = new GraphNode(id, nodeType);
         nodes.Add(id, newNode);
 
         // If a parent is specified, assign the parent–child relationship.
@@ -74,7 +78,7 @@ public class Graph
     // Update the id (or other properties) of a node.
     // Here, we update the node's id while ensuring the new id is unique.
     // Returns true if update succeeds.
-    public bool UpdateNode(string oldId, string newId)
+    public bool UpdateNode(string oldId, string newId, string newNodeType = null)
     {
         if (!nodes.ContainsKey(oldId))
         {
@@ -92,6 +96,10 @@ public class Graph
         GraphNode node = nodes[oldId];
         nodes.Remove(oldId);
         node.id = newId;
+        if (newNodeType != null)
+        {
+            node.nodeType = newNodeType;
+        }
         nodes.Add(newId, node);
 
         return true;
