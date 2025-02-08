@@ -407,6 +407,7 @@ public class GraphManager : MonoBehaviour
             nodeObj.SetActive(true); // Ensure it becomes visible.
 
             nodeObj.name = "Node " + node.id + " (" + node.nodeType + ")";
+
             // Optionally adjust the scale.
             nodeObj.transform.localScale = Vector3.one * 0.5f;
 
@@ -437,6 +438,14 @@ public class GraphManager : MonoBehaviour
                 }
 
                 rend.material = materialToUse;
+            }
+            // Update the NodeInfo component with the node's type.
+            NodeInfo nodeInfo = nodeObj.GetComponent<NodeInfo>();
+            if (nodeInfo != null)
+            {
+                nodeInfo.nodeType = type;
+                nodeInfo.nodeID = node.id;
+
             }
         }
 
