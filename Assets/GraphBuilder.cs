@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 [Serializable]
@@ -40,59 +41,183 @@ public class GraphBuilder : MonoBehaviour
 {
     // Reference to a TextAsset containing your JSON (assign in Inspector)
     public TextAsset jsonGraphData;
+    public bool useLocal = true;
+    private DataLoader dataLoader;
+    private string apiUrl = "https://dev.domain.foundation.arundo.com/domain/f9a6e31b-c309-49b2-a81f-46c26f50dcc3/graph";
 
-    // This method parses the JSON and builds the graph.
+    void Awake()
+    {
+        dataLoader = new DataLoader();
+    }
+
+    // Synchronous method for local data
     public Graph BuildGraphFromJson()
     {
-        // Parse the JSON file.
-        GraphData graphData = JsonUtility.FromJson<GraphData>(jsonGraphData.text);
-
-        // Graph graph = new Graph();
-        // A dictionary for quick lookup of nodes by their id.
-        Dictionary<string, GraphNode> nodesById = new Dictionary<string, GraphNode>();
-
-        // Create a graph
-        Graph graph = new Graph();
-
-        // Create a node for each vertex.
-        foreach (Vertex vertex in graphData.vertices)
+        if (!useLocal)
         {
-            // Create a GraphNode using the vertex information.
-            GraphNode node = new GraphNode(vertex.id, vertex.name, vertex.type);
-            // Add attributes if they exist
-            if (vertex.attributes != null)
-            {
-                foreach (Attribute attr in vertex.attributes)
-                {
-                    node.attributes.Add(attr.name, attr.value);
-                }
-            }
-            // Add it to the graph.
-            graph.AddNode(node);
-            nodesById.Add(vertex.id, node);
+            Debug.LogWarning("BuildGraphFromJson called with useLocal=false. Use BuildGraphFromJsonAsync instead.");
+            return new Graph();
         }
 
-        // Now, go through each relationship and set up the parent-child relationships.
-        foreach (Relationship rel in graphData.relationships)
+        return BuildGraphFromJsonText(jsonGraphData.text);
+    }
+
+    // Asynchronous method for API data
+    public IEnumerator BuildGraphFromJsonAsync(System.Action<Graph> onGraphBuilt)
+    {
+        if (useLocal)
         {
-            if (rel.type == "HAS_CHILD")
-            {
-                // Ensure both vertices exist.
-                if (nodesById.ContainsKey(rel.fromVertexId) && nodesById.ContainsKey(rel.toVertexId))
-                {
-                    GraphNode parent = nodesById[rel.fromVertexId];
-                    GraphNode child = nodesById[rel.toVertexId];
-                    // Set the relationship (assuming each child has only one parent).
-                    child.parent = parent;
-                    parent.children.Add(child);
-                }
-                else
-                {
-                    Debug.LogWarning($"Relationship {rel.type} skipped because one of the vertices was not found: {rel.fromVertexId} or {rel.toVertexId}");
-                }
-            }
+            Debug.Log("Using local graph data");
+            onGraphBuilt?.Invoke(BuildGraphFromJson());
+            yield break;
         }
 
-        return graph;
+        Debug.Log("Fetching graph data from API...");
+        Debug.Log($"API URL: {apiUrl}");
+
+        string authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzkxMzQ0MDAsImV4cCI6MTczOTEzODAwMCwiYXVkIjpbImh0dHBzOi8vZGF0YS5mb3VuZGF0aW9uLmFydW5kby5jb20iLCJodHRwczovL2RvbWFpbi5mb3VuZGF0aW9uLmFydW5kby5jb20iXSwiaXNzIjoiaHR0cHM6Ly9mb3VuZGF0aW9uLmFydW5kby5jb20iLCJzdWIiOiJzdXBwb3J0QGFydW5kby5jb20ifQ.qM5aTdWx66ObQ1yoq8cNZoAn3bcJt7iSAz6x_oGG2Aw";
+        string requestBody = @"{
+            ""entrypoints"": [{
+                ""id"": ""045a5a9a-a4c2-42f3-a2c9-c5f5f2d62750""
+            }],
+            ""vertices"": [""Asset"", ""Sensor""],
+            ""returnVertices"": [""Asset"", ""Sensor""],
+            ""relationships"": [{
+                ""type"": ""HAS_CHILD"",
+                ""direction"": ""both""
+            }, {
+                ""type"": ""HAS_POINTER"",
+                ""direction"": ""outgoing""
+            }, {
+                ""type"": ""HAS_SOURCE"",
+                ""direction"": ""outgoing""
+            }, {
+                ""type"": ""HAS_INPUT"",
+                ""direction"": ""both""
+            }, {
+                ""type"": ""HAS_OUTPUT"",
+                ""direction"": ""both""
+            }, {
+                ""type"": ""USES_TEMPLATE"",
+                ""direction"": ""outgoing""
+            }],
+            ""depth"": 10,
+            ""identifiablePaths"": [{
+                ""type"": ""HAS_CHILD"",
+                ""direction"": ""incoming""
+            }, {
+                ""type"": ""HAS_POINTER"",
+                ""direction"": ""incoming""
+            }, {
+                ""type"": ""EXTENDS_TEMPLATE"",
+                ""direction"": ""outgoing""
+            }, {
+                ""type"": ""EXTENDS_ROOT_TEMPLATE"",
+                ""direction"": ""outgoing""
+            }]
+        }";
+
+        Debug.Log($"Request Body: {requestBody}");
+
+        yield return dataLoader.FetchData(
+            apiUrl,
+            authToken,
+            requestBody,
+            (jsonResponse) =>
+            {
+                try
+                {
+                    Debug.Log($"Received API response: {jsonResponse.Substring(0, Mathf.Min(500, jsonResponse.Length))}...");
+                    Graph graph = BuildGraphFromJsonText(jsonResponse);
+                    Debug.Log($"Successfully built graph with {graph.GetAllNodes().Count} nodes");
+                    onGraphBuilt?.Invoke(graph);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Error parsing graph data: {e.Message}");
+                    Debug.LogError($"Stack trace: {e.StackTrace}");
+                    onGraphBuilt?.Invoke(new Graph());
+                }
+            },
+            (error) =>
+            {
+                Debug.LogError($"Error fetching graph data: {error}");
+                onGraphBuilt?.Invoke(new Graph());
+            }
+        );
+    }
+
+    private Graph BuildGraphFromJsonText(string jsonText)
+    {
+        try
+        {
+            // Parse the JSON file
+            GraphData graphData = JsonUtility.FromJson<GraphData>(jsonText);
+            Debug.Log($"Parsed JSON data: {graphData.vertices?.Length ?? 0} vertices, {graphData.relationships?.Length ?? 0} relationships");
+
+            Dictionary<string, GraphNode> nodesById = new Dictionary<string, GraphNode>();
+            Graph graph = new Graph();
+
+            // Create nodes
+            if (graphData.vertices != null)
+            {
+                foreach (Vertex vertex in graphData.vertices)
+                {
+                    GraphNode node = new GraphNode(vertex.id, vertex.name, vertex.type);
+                    if (vertex.attributes != null)
+                    {
+                        foreach (Attribute attr in vertex.attributes)
+                        {
+                            node.attributes.Add(attr.name, attr.value);
+                        }
+                    }
+                    graph.AddNode(node);
+                    nodesById.Add(vertex.id, node);
+                }
+                Debug.Log($"Created {nodesById.Count} nodes");
+            }
+            else
+            {
+                Debug.LogWarning("No vertices found in graph data");
+            }
+
+            // Set up relationships
+            if (graphData.relationships != null)
+            {
+                int relationshipCount = 0;
+                foreach (Relationship rel in graphData.relationships)
+                {
+                    if (rel.type == "HAS_CHILD")
+                    {
+                        if (nodesById.ContainsKey(rel.fromVertexId) && nodesById.ContainsKey(rel.toVertexId))
+                        {
+                            GraphNode parent = nodesById[rel.fromVertexId];
+                            GraphNode child = nodesById[rel.toVertexId];
+                            child.parent = parent;
+                            parent.children.Add(child);
+                            relationshipCount++;
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"Relationship {rel.type} skipped because one of the vertices was not found: {rel.fromVertexId} or {rel.toVertexId}");
+                        }
+                    }
+                }
+                Debug.Log($"Processed {relationshipCount} parent-child relationships");
+            }
+            else
+            {
+                Debug.LogWarning("No relationships found in graph data");
+            }
+
+            return graph;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error in BuildGraphFromJsonText: {e.Message}");
+            Debug.LogError($"JSON text: {jsonText}");
+            Debug.LogError($"Stack trace: {e.StackTrace}");
+            throw;
+        }
     }
 }

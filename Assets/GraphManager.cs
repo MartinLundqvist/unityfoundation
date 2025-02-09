@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class GraphManager : MonoBehaviour
 {
@@ -82,50 +83,34 @@ public class GraphManager : MonoBehaviour
 
     void Start()
     {
-
-        // Create and cache the fallback prefab only once.
+        // Create and cache the fallback prefab only once
         fallbackNodePrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        fallbackNodePrefab.SetActive(false); // Hide it so it doesn't appear in the scene.
+        fallbackNodePrefab.SetActive(false);
 
-        // Build the graph from the JSON file.
+        // Build the graph 
         GraphBuilder builder = GetComponent<GraphBuilder>();
-        graph = builder.BuildGraphFromJson();
 
-        // // Initialize empty graph
-        // graph = new Graph();
+        if (builder.useLocal)
+        {
+            graph = builder.BuildGraphFromJson();
+            BuildGraphVisualization();
+        }
+        else
+        {
+            StartCoroutine(builder.BuildGraphFromJsonAsync(graph =>
+            {
+                this.graph = graph;
+                BuildGraphVisualization();
+            }));
+        }
+    }
 
-        // // Load and parse graph definition
-        // string jsonText = graphDefinition != null
-        //     ? graphDefinition.text
-        //     : Resources.Load<TextAsset>("graph_definition").text;
-
-        // GraphDefinition definition = JsonUtility.FromJson<GraphDefinition>(jsonText);
-
-        // // First pass: Add all nodes
-        // foreach (var node in definition.nodes)
-        // {
-        //     if (string.IsNullOrEmpty(node.parent))
-        //     {
-        //         graph.AddNode(node.id, null, node.type);
-        //     }
-        //     else
-        //     {
-        //         graph.AddNode(node.id, node.parent, node.type);
-        //     }
-        // }
-
-        // 1. Group nodes by their computed layer.
+    // New method to encapsulate the graph visualization logic
+    private void BuildGraphVisualization()
+    {
         Dictionary<int, List<GraphNode>> layers = ComputeLayers();
-
-        // 2. Refine ordering and assign positions in the XZ plane for each layer.
-        //    For layer 0, use a grid; for layers > 0, group siblings so that children are arranged 
-        //    relative to their parent's position and then adjust groups to avoid overlapping.
         RefineLayerOrdering(layers);
-
-        // 3. Bottom-up centering: Update parent's positions so that each parent becomes centered under its children.
         UpdateParentPositions(layers);
-
-        // 4. Render the graph (nodes and edges) using the computed positions.
         RenderGraph();
     }
 

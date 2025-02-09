@@ -108,7 +108,6 @@ public class NodeClickHandler : MonoBehaviour
 
         // Create the request body
         string requestBody = @"{
-            ""tick"": ""2021-01-02T00:00:00Z"",
             ""formatting"": {
                 ""timestamp"": ""epoch"",
                 ""timeseries"": ""dictionary""
@@ -118,18 +117,18 @@ public class NodeClickHandler : MonoBehaviour
                     ""query"": ""range"",
                     ""sensorId"": """ + sensorId + @""",
                     ""instructions"": {
-                        ""period"": ""-P1D"",
-                        ""resolution"": ""PT1H""
+                        ""period"": ""-P30D"",
+                        ""resolution"": ""P1D""
                     }
                 }
             ]
         }";
 
-        string baseUrl = "http://localhost:3001/api/domain/35ab55d2-b882-4621-b80a-ca997fd2547d/data";
+        string baseUrl = "https://dev.data.foundation.arundo.com/domain/f9a6e31b-c309-49b2-a81f-46c26f50dcc3/data";
         string url = UrlHelper.BuildUrlWithParams(baseUrl, parameters);
 
         // You might want to store this auth token somewhere more secure
-        string authToken = "your-auth-token";  // Replace with actual auth token
+        string authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzkxMzQ0MDAsImV4cCI6MTczOTEzODAwMCwiYXVkIjpbImh0dHBzOi8vZGF0YS5mb3VuZGF0aW9uLmFydW5kby5jb20iLCJodHRwczovL2RvbWFpbi5mb3VuZGF0aW9uLmFydW5kby5jb20iXSwiaXNzIjoiaHR0cHM6Ly9mb3VuZGF0aW9uLmFydW5kby5jb20iLCJzdWIiOiJzdXBwb3J0QGFydW5kby5jb20ifQ.qM5aTdWx66ObQ1yoq8cNZoAn3bcJt7iSAz6x_oGG2Aw";  // Replace with actual auth token
 
         yield return StartCoroutine(dataLoader.FetchData(
             url,
@@ -189,6 +188,7 @@ public class NodeClickHandler : MonoBehaviour
 
         try
         {
+            Debug.Log("Loading sensor data from JSON:" + jsonText);
             // Trim whitespace and check if the JSON starts with '['.
             jsonText = jsonText.Trim();
             if (jsonText.StartsWith("["))

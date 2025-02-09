@@ -121,7 +121,7 @@ public class TimeSeriesGraphRenderer : MonoBehaviour
 
         return new Vector2(
             padding + (normalizedX * usableWidth),
-            graphHeight - (padding + (normalizedY * usableHeight))
+            padding + (normalizedY * usableHeight)
         );
     }
 
@@ -200,7 +200,7 @@ public class TimeSeriesGraphRenderer : MonoBehaviour
         // Generate Y-axis labels
         for (int i = 0; i <= yLabelCount; i++)
         {
-            float normalizedValue = i / (float)yLabelCount;
+            float normalizedValue = (yLabelCount - i) / (float)yLabelCount;
             float yValue = Mathf.Lerp(yMin, yMax, normalizedValue);
 
             // Create label

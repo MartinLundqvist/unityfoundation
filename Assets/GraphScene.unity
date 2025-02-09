@@ -348,6 +348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonGraphData: {fileID: 4900000, guid: 6d1acebc9203248b59704cc376207ba2, type: 3}
+  useLocal: 0
 --- !u!1 &370382077
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,10 +709,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 6.15
-  m_fontSizeBase: 36
+  m_fontSize: 9
+  m_fontSizeBase: 9
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 0
   m_fontSizeMax: 15
   m_fontStyle: 0
@@ -724,9 +725,9 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -797,7 +798,7 @@ RectTransform:
   - {fileID: 736534379}
   m_Father: {fileID: 629650541}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.75, y: 0.5}
+  m_AnchorMin: {x: 0.75, y: 0.4}
   m_AnchorMax: {x: 1, y: 0.75}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -10, y: 0}
@@ -857,7 +858,7 @@ MonoBehaviour:
   lineColor: {r: 0, g: 0.5943396, b: 0, a: 1}
   lineWidth: 1
   xAxisContainer: {fileID: 370382078}
-  xLabelPrefab: {fileID: 6515054481186619980, guid: c344d101215bd487d8ebf3e651349d90, type: 3}
+  xLabelPrefab: {fileID: 6515054481186619980, guid: fc8a66c8d9ea84f49b55ee486bb54a47, type: 3}
   xLabelCount: 5
   yLabelCount: 4
   yLabelPrefab: {fileID: 6515054481186619980, guid: c344d101215bd487d8ebf3e651349d90, type: 3}
@@ -1108,6 +1109,7 @@ MonoBehaviour:
   infoPanel: {fileID: 582046011}
   infoText: {fileID: 1559733710}
   graphRenderer: {fileID: 1494944779}
+  useLocalData: 0
 --- !u!1 &1832024110
 GameObject:
   m_ObjectHideFlags: 0
