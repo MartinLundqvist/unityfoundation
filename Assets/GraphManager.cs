@@ -459,7 +459,7 @@ public class GraphManager : MonoBehaviour
             {
                 nodeInfo.nodeType = type;
                 nodeInfo.nodeID = node.id;
-                nodeInfo.name = node.name;
+                nodeInfo.nodeName = node.name;
 
                 // Copy attributes
                 if (node.attributes != null)
