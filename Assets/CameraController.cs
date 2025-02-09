@@ -63,8 +63,13 @@ public class CameraController : MonoBehaviour
         float moveX = Input.GetAxis("Horizontal"); // A/D or Left/Right
         float moveZ = Input.GetAxis("Vertical");   // W/S or Up/Down
 
+        // Get vertical movement from Q/E keys
+        float moveY = 0f;
+        if (Input.GetKey(KeyCode.E)) moveY += 1f;
+        if (Input.GetKey(KeyCode.Q)) moveY -= 1f;
+
         // Calculate movement relative to the camera's orientation.
-        Vector3 move = transform.right * moveX + transform.forward * moveZ;
+        Vector3 move = transform.right * moveX + transform.forward * moveZ + Vector3.up * moveY;
 
         // Move the camera (frame-rate independent).
         transform.position += move * movementSpeed * Time.deltaTime;

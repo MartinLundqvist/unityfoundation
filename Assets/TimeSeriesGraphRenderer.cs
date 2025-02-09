@@ -17,6 +17,9 @@ public class TimeSeriesGraphRenderer : MonoBehaviour
 
 
     public int xLabelCount = 5;
+    public int yLabelCount = 5;
+    public TextMeshProUGUI yLabelPrefab;
+    public RectTransform yAxisContainer;
 
     private List<Vector2> timeSeriesData = new List<Vector2>();
 
@@ -62,8 +65,9 @@ public class TimeSeriesGraphRenderer : MonoBehaviour
         float yMin = timeSeriesData.Min(point => point.y);
         float yMax = timeSeriesData.Max(point => point.y);
 
-        // Draw X-axis labels
+        // Draw X-axis, Y-axis labels
         DrawXAxis(xMin, xMax);
+        DrawYAxis(yMin, yMax);
 
         // Get the graph dimensions
         Rect graphRect = graphContainer.rect;
@@ -152,6 +156,35 @@ public class TimeSeriesGraphRenderer : MonoBehaviour
             // Set a consistent width for each label container
             float labelWidth = graphWidth / (xLabelCount + 1);
             labelRect.sizeDelta = new Vector2(labelWidth, labelRect.sizeDelta.y);
+        }
+    }
+    private void DrawYAxis(float yMin, float yMax)
+    {
+        // Clear previous Y-axis labels
+        foreach (Transform child in yAxisContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Get graph dimensions
+        float graphHeight = graphContainer.rect.height;
+
+        // Generate Y-axis labels
+        for (int i = 0; i <= yLabelCount; i++)
+        {
+            float normalizedValue = i / (float)yLabelCount;
+            float yValue = Mathf.Lerp(yMin, yMax, normalizedValue);
+
+            // Create label
+            TextMeshProUGUI label = Instantiate(yLabelPrefab, yAxisContainer);
+            label.text = yValue.ToString("F2");  // Format to two decimal places
+
+            // Get the label's RectTransform
+            RectTransform labelRect = label.rectTransform;
+
+            // Set a consistent height for each label container
+            float labelHeight = graphHeight / (yLabelCount + 1);
+            labelRect.sizeDelta = new Vector2(labelRect.sizeDelta.x, labelHeight);
         }
     }
 
