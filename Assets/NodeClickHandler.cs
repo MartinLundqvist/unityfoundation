@@ -5,6 +5,7 @@ using System.Linq;
 using System;
 using System.Text;
 using Newtonsoft.Json;  // Make sure Newtonsoft.Json is installed
+using System.Collections;
 
 public class NodeClickHandler : MonoBehaviour
 {
@@ -16,6 +17,15 @@ public class NodeClickHandler : MonoBehaviour
     public TMPro.TextMeshProUGUI infoText;
     // Reference to the TimeSeriesGraphRenderer component.
     public TimeSeriesGraphRenderer graphRenderer;
+    // Add this field at the top of the class
+    private DataLoader dataLoader;
+    // Add at the top of the class
+    public bool useLocalData = true;  // Can be toggled in the Unity Inspector
+
+    void Start()
+    {
+        dataLoader = new DataLoader();
+    }
 
     void Update()
     {
@@ -66,11 +76,24 @@ public class NodeClickHandler : MonoBehaviour
         if (graphRenderer != null)
         {
             graphRenderer.gameObject.SetActive(true);
+            graphRenderer.Initialize();
 
-            // Load data points using Newtonsoft.Json.
-            List<Vector2> dataPoints = LoadSensorData("89afbe56-2109-5e9d-b8d5-640975813b0b");
-            graphRenderer.SetData(dataPoints);
-            graphRenderer.UpdateValueText(nodeInfo.nodeName);
+            if (useLocalData)
+            {
+                // Use local data (existing implementation)
+                List<Vector2> dataPoints = LoadSensorData("89afbe56-2109-5e9d-b8d5-640975813b0b");
+                graphRenderer.SetData(dataPoints, nodeInfo.nodeName);
+                // graphRenderer.UpdateValueText(nodeInfo.nodeName);
+            }
+            else
+            {
+                // Use API data
+                StartCoroutine(LoadSensorDataAsync(nodeInfo.nodeID, (dataPoints) =>
+                {
+                    graphRenderer.SetData(dataPoints, nodeInfo.nodeName);
+                    // graphRenderer.UpdateValueText(nodeInfo.nodeName);
+                }));
+            }
         }
         else
         {
@@ -78,9 +101,73 @@ public class NodeClickHandler : MonoBehaviour
         }
     }
 
+    private IEnumerator LoadSensorDataAsync(string sensorId, System.Action<List<Vector2>> onDataLoaded)
+    {
+        // Initialize empty parameters dictionary
+        Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+        // Create the request body
+        string requestBody = @"{
+            ""tick"": ""2021-01-02T00:00:00Z"",
+            ""formatting"": {
+                ""timestamp"": ""epoch"",
+                ""timeseries"": ""dictionary""
+            },
+            ""dataQueries"": [
+                {
+                    ""query"": ""range"",
+                    ""sensorId"": """ + sensorId + @""",
+                    ""instructions"": {
+                        ""period"": ""-P1D"",
+                        ""resolution"": ""PT1H""
+                    }
+                }
+            ]
+        }";
+
+        string baseUrl = "http://localhost:3001/api/domain/35ab55d2-b882-4621-b80a-ca997fd2547d/data";
+        string url = UrlHelper.BuildUrlWithParams(baseUrl, parameters);
+
+        // You might want to store this auth token somewhere more secure
+        string authToken = "your-auth-token";  // Replace with actual auth token
+
+        yield return StartCoroutine(dataLoader.FetchData(
+            url,
+            authToken,
+            requestBody,
+            (jsonResponse) =>
+            {
+                // Instead of creating a TextAsset, just parse the JSON directly
+                try
+                {
+                    string jsonText = jsonResponse.Trim();
+                    if (jsonText.StartsWith("["))
+                    {
+                        jsonText = "{\"entries\":" + jsonText + "}";
+                    }
+
+                    // Use the existing parsing logic but pass the JSON string directly
+                    List<Vector2> dataPoints = LoadSensorDataFromJson(jsonText, sensorId);
+                    onDataLoaded?.Invoke(dataPoints);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Error parsing sensor data: {e.Message}");
+                    onDataLoaded?.Invoke(new List<Vector2>());
+                }
+            },
+            (error) =>
+            {
+                Debug.LogError($"Error fetching sensor data: {error}");
+                onDataLoaded?.Invoke(new List<Vector2>());
+            }
+        ));
+    }
+
+    // Modify LoadSensorData to use the shared method
     private List<Vector2> LoadSensorData(string sensorId)
     {
-        // Load the JSON file from the Resources folder.
+        Debug.LogWarning("Using fallback local sensor data loading method");
         TextAsset jsonFile = Resources.Load<TextAsset>("sensor_data");
         if (jsonFile == null)
         {
@@ -88,10 +175,22 @@ public class NodeClickHandler : MonoBehaviour
             return new List<Vector2>();
         }
 
+        return LoadSensorDataFromJson(jsonFile.text, sensorId);
+    }
+
+    // Modified shared method that takes a JSON string instead of TextAsset
+    private List<Vector2> LoadSensorDataFromJson(string jsonText, string sensorId)
+    {
+        if (string.IsNullOrEmpty(jsonText))
+        {
+            Debug.LogError("JSON text is null or empty");
+            return new List<Vector2>();
+        }
+
         try
         {
             // Trim whitespace and check if the JSON starts with '['.
-            string jsonText = jsonFile.text.Trim();
+            jsonText = jsonText.Trim();
             if (jsonText.StartsWith("["))
             {
                 // Wrap the array in an object with an "entries" field.

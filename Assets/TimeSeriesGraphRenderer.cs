@@ -43,21 +43,46 @@ public class TimeSeriesGraphRenderer : MonoBehaviour
         }
     }
 
-    public void SetData(List<Vector2> dataPoints)
+    public void SetData(List<Vector2> dataPoints, string nodeName)
     {
         timeSeriesData = dataPoints;
+        UpdateValueText(nodeName);
         DrawGraph();
+    }
+
+    private void ClearGraph()
+    {
+        foreach (Transform child in graphContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in xAxisContainer)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in yAxisContainer)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+    public void Initialize()
+    {
+        // Clear previous graph elements
+        ClearGraph();
+
+        UpdateValueText("Loading sensor data...");
     }
 
     private void DrawGraph()
     {
         // Clear previous graph elements
-        foreach (Transform child in graphContainer)
-        {
-            Destroy(child.gameObject);
-        }
+        ClearGraph();
 
-        if (timeSeriesData.Count < 2) return;
+        if (timeSeriesData.Count < 2)
+        {
+            UpdateValueText("No data found");
+            return;
+        }
 
         // Determine the data range
         float xMin = timeSeriesData.Min(point => point.x);
