@@ -146,9 +146,12 @@ public class TimeSeriesGraphRenderer : MonoBehaviour
             float normalizedValue = i / (float)xLabelCount;
             float xValue = Mathf.Lerp(xMin, xMax, normalizedValue);
 
+            // Convert epoch to DateTime
+            System.DateTime dateTime = System.DateTimeOffset.FromUnixTimeSeconds((long)xValue).DateTime;
+
             // Create label
             TextMeshProUGUI label = Instantiate(xLabelPrefab, xAxisContainer);
-            label.text = xValue.ToString("F2");  // Format to two decimal places
+            label.text = dateTime.ToString("MM/dd HH:mm"); // Format as "Month/Day Hour:Minute"
 
             // Get the label's RectTransform
             RectTransform labelRect = label.rectTransform;
