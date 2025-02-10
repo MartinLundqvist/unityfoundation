@@ -110,6 +110,10 @@ public class NodeClickHandler : MonoBehaviour
 
     private IEnumerator LoadSensorDataAsync(string sensorId, System.Action<List<Vector2>> onDataLoaded)
     {
+        // Reset these in case they were changed by the AdminManager
+        baseUrl = "https://dev.data.foundation.arundo.com/domain/" + AdminManager.Instance.DomainID + "/data"; // f9a6e31b-c309-49b2-a81f-46c26f50dcc3
+        bearerToken = AdminManager.Instance.BearerToken;
+
         // Initialize empty parameters dictionary
         Dictionary<string, string> parameters = new Dictionary<string, string>();
 

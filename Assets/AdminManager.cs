@@ -46,12 +46,37 @@ public class AdminManager : MonoBehaviour
     {
         if (domainIDInput != null)
         {
-            domainIDInput.text = domainID;
+            domainIDInput.SetTextWithoutNotify(domainID);
+            domainIDInput.onValueChanged.AddListener(OnDomainIDChanged);
         }
 
         if (bearerTokenInput != null)
         {
-            bearerTokenInput.text = bearerToken;
+            bearerTokenInput.SetTextWithoutNotify(bearerToken);
+            bearerTokenInput.onValueChanged.AddListener(OnBearerTokenChanged);
+        }
+    }
+
+    private void OnDomainIDChanged(string newValue)
+    {
+        domainID = newValue;
+    }
+
+    private void OnBearerTokenChanged(string newValue)
+    {
+        bearerToken = newValue;
+    }
+
+    private void OnDestroy()
+    {
+        // Clean up listeners to prevent memory leaks
+        if (domainIDInput != null)
+        {
+            domainIDInput.onValueChanged.RemoveListener(OnDomainIDChanged);
+        }
+        if (bearerTokenInput != null)
+        {
+            bearerTokenInput.onValueChanged.RemoveListener(OnBearerTokenChanged);
         }
     }
 }

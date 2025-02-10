@@ -501,4 +501,34 @@ public class GraphManager : MonoBehaviour
     }
 
     #endregion
+
+    /// <summary>
+    /// Clears and rebuilds the entire graph visualization.
+    /// </summary>
+    [SerializeField]
+    public void RebuildGraph()
+    {
+        // Clear existing visualization
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+        computedPositions.Clear();
+
+        // Rebuild the graph
+        GraphBuilder builder = GetComponent<GraphBuilder>();
+        if (builder.useLocal)
+        {
+            graph = builder.BuildGraphFromJson();
+            BuildGraphVisualization();
+        }
+        else
+        {
+            StartCoroutine(builder.BuildGraphFromJsonAsync(graph =>
+            {
+                this.graph = graph;
+                BuildGraphVisualization();
+            }));
+        }
+    }
 }

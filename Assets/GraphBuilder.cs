@@ -79,6 +79,10 @@ public class GraphBuilder : MonoBehaviour
         Debug.Log("Fetching graph data from API...");
         Debug.Log($"API URL: {apiUrl}");
 
+        // Reset these in case they were changed by the AdminManager
+        apiUrl = "https://dev.domain.foundation.arundo.com/domain/" + AdminManager.Instance.DomainID + "/graph";// f9a6e31b-c309-49b2-a81f-46c26f50dcc3
+        bearerToken = AdminManager.Instance.BearerToken;
+
         string requestBody = @"{
             ""entrypoints"": [{
                 ""id"": ""045a5a9a-a4c2-42f3-a2c9-c5f5f2d62750""
