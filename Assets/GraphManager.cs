@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class GraphManager : MonoBehaviour
 {
@@ -402,10 +403,17 @@ public class GraphManager : MonoBehaviour
                 prefabToUse = nodePrefab != null ? nodePrefab : fallbackNodePrefab;
             }
 
-            nodeObj = Instantiate(prefabToUse, pos, Quaternion.identity);
+            nodeObj = Instantiate(prefabToUse, pos, Quaternion.identity, this.transform);
             nodeObj.SetActive(true); // Ensure it becomes visible.
 
             nodeObj.name = "Node " + node.id + " (" + node.nodeType + ")";
+
+            // Set the node name text if there's a TextMeshPro component in children
+            TMPro.TextMeshPro textComponent = nodeObj.GetComponentInChildren<TMPro.TextMeshPro>();
+            if (textComponent != null)
+            {
+                textComponent.text = node.name;
+            }
 
             // Optionally adjust the scale.
             nodeObj.transform.localScale = Vector3.one * 0.5f;
@@ -478,7 +486,7 @@ public class GraphManager : MonoBehaviour
 
         // Create a cylinder primitive.
         GameObject tube = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-
+        tube.transform.SetParent(this.transform);
         // Position the tube at the midpoint.
         tube.transform.position = (startPos + endPos) / 2f;
 
