@@ -22,9 +22,16 @@ public class NodeClickHandler : MonoBehaviour
     // Add at the top of the class
     public bool useLocalData = true;  // Can be toggled in the Unity Inspector
 
+    private string baseUrl;
+
+    private string bearerToken;
+
     void Start()
     {
         dataLoader = new DataLoader();
+        baseUrl = "https://dev.data.foundation.arundo.com/domain/" + AdminManager.Instance.DomainID + "/data"; // f9a6e31b-c309-49b2-a81f-46c26f50dcc3
+        bearerToken = AdminManager.Instance.BearerToken;
+
     }
 
     void Update()
@@ -124,15 +131,15 @@ public class NodeClickHandler : MonoBehaviour
             ]
         }";
 
-        string baseUrl = "https://dev.data.foundation.arundo.com/domain/f9a6e31b-c309-49b2-a81f-46c26f50dcc3/data";
+
         string url = UrlHelper.BuildUrlWithParams(baseUrl, parameters);
 
         // You might want to store this auth token somewhere more secure
-        string authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzkxMzQ0MDAsImV4cCI6MTczOTEzODAwMCwiYXVkIjpbImh0dHBzOi8vZGF0YS5mb3VuZGF0aW9uLmFydW5kby5jb20iLCJodHRwczovL2RvbWFpbi5mb3VuZGF0aW9uLmFydW5kby5jb20iXSwiaXNzIjoiaHR0cHM6Ly9mb3VuZGF0aW9uLmFydW5kby5jb20iLCJzdWIiOiJzdXBwb3J0QGFydW5kby5jb20ifQ.qM5aTdWx66ObQ1yoq8cNZoAn3bcJt7iSAz6x_oGG2Aw";  // Replace with actual auth token
+        // string authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzkxMzQ0MDAsImV4cCI6MTczOTEzODAwMCwiYXVkIjpbImh0dHBzOi8vZGF0YS5mb3VuZGF0aW9uLmFydW5kby5jb20iLCJodHRwczovL2RvbWFpbi5mb3VuZGF0aW9uLmFydW5kby5jb20iXSwiaXNzIjoiaHR0cHM6Ly9mb3VuZGF0aW9uLmFydW5kby5jb20iLCJzdWIiOiJzdXBwb3J0QGFydW5kby5jb20ifQ.qM5aTdWx66ObQ1yoq8cNZoAn3bcJt7iSAz6x_oGG2Aw";  // Replace with actual auth token
 
         yield return StartCoroutine(dataLoader.FetchData(
             url,
-            authToken,
+            bearerToken,
             requestBody,
             (jsonResponse) =>
             {
