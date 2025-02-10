@@ -45,6 +45,7 @@ public class GraphBuilder : MonoBehaviour
     private DataLoader dataLoader;
     private string apiUrl;
     private string bearerToken;
+    private string rootAssetID;
 
     void Awake()
     {
@@ -52,6 +53,7 @@ public class GraphBuilder : MonoBehaviour
 
         apiUrl = "https://dev.domain.foundation.arundo.com/domain/" + AdminManager.Instance.DomainID + "/graph";// f9a6e31b-c309-49b2-a81f-46c26f50dcc3
         bearerToken = AdminManager.Instance.BearerToken;
+        rootAssetID = AdminManager.Instance.RootAssetID;
     }
 
     // Synchronous method for local data
@@ -82,10 +84,11 @@ public class GraphBuilder : MonoBehaviour
         // Reset these in case they were changed by the AdminManager
         apiUrl = "https://dev.domain.foundation.arundo.com/domain/" + AdminManager.Instance.DomainID + "/graph";// f9a6e31b-c309-49b2-a81f-46c26f50dcc3
         bearerToken = AdminManager.Instance.BearerToken;
+        rootAssetID = AdminManager.Instance.RootAssetID;
 
         string requestBody = @"{
             ""entrypoints"": [{
-                ""id"": ""045a5a9a-a4c2-42f3-a2c9-c5f5f2d62750""
+                ""id"": """ + rootAssetID + @"""
             }],
             ""vertices"": [""Asset"", ""Sensor""],
             ""returnVertices"": [""Asset"", ""Sensor""],

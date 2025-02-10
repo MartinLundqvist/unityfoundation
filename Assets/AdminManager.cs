@@ -5,12 +5,14 @@ public class AdminManager : MonoBehaviour
 {
     [SerializeField] private string domainID = "";
     [SerializeField] private string bearerToken = "";
+    [SerializeField] private string rootAssetID = "";
     [SerializeField] private TMP_InputField domainIDInput;
     [SerializeField] private TMP_InputField bearerTokenInput;
+    [SerializeField] private TMP_InputField rootAssetIDInput;
 
     public string DomainID => domainID;
     public string BearerToken => bearerToken;
-
+    public string RootAssetID => rootAssetID;
     // Singleton pattern
     private static AdminManager instance;
     public static AdminManager Instance
@@ -55,6 +57,12 @@ public class AdminManager : MonoBehaviour
             bearerTokenInput.SetTextWithoutNotify(bearerToken);
             bearerTokenInput.onValueChanged.AddListener(OnBearerTokenChanged);
         }
+
+        if (rootAssetIDInput != null)
+        {
+            rootAssetIDInput.SetTextWithoutNotify(rootAssetID);
+            rootAssetIDInput.onValueChanged.AddListener(OnRootAssetIDChanged);
+        }
     }
 
     private void OnDomainIDChanged(string newValue)
@@ -67,6 +75,11 @@ public class AdminManager : MonoBehaviour
         bearerToken = newValue;
     }
 
+    private void OnRootAssetIDChanged(string newValue)
+    {
+        rootAssetID = newValue;
+    }
+
     private void OnDestroy()
     {
         // Clean up listeners to prevent memory leaks
@@ -77,6 +90,10 @@ public class AdminManager : MonoBehaviour
         if (bearerTokenInput != null)
         {
             bearerTokenInput.onValueChanged.RemoveListener(OnBearerTokenChanged);
+        }
+        if (rootAssetIDInput != null)
+        {
+            rootAssetIDInput.onValueChanged.RemoveListener(OnRootAssetIDChanged);
         }
     }
 }
