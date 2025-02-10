@@ -134,8 +134,6 @@ public class NodeClickHandler : MonoBehaviour
 
         string url = UrlHelper.BuildUrlWithParams(baseUrl, parameters);
 
-        // You might want to store this auth token somewhere more secure
-        // string authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzkxMzQ0MDAsImV4cCI6MTczOTEzODAwMCwiYXVkIjpbImh0dHBzOi8vZGF0YS5mb3VuZGF0aW9uLmFydW5kby5jb20iLCJodHRwczovL2RvbWFpbi5mb3VuZGF0aW9uLmFydW5kby5jb20iXSwiaXNzIjoiaHR0cHM6Ly9mb3VuZGF0aW9uLmFydW5kby5jb20iLCJzdWIiOiJzdXBwb3J0QGFydW5kby5jb20ifQ.qM5aTdWx66ObQ1yoq8cNZoAn3bcJt7iSAz6x_oGG2Aw";  // Replace with actual auth token
 
         yield return StartCoroutine(dataLoader.FetchData(
             url,

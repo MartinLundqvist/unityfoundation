@@ -79,7 +79,6 @@ public class GraphBuilder : MonoBehaviour
         Debug.Log("Fetching graph data from API...");
         Debug.Log($"API URL: {apiUrl}");
 
-        //  string authToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzkxMzQ0MDAsImV4cCI6MTczOTEzODAwMCwiYXVkIjpbImh0dHBzOi8vZGF0YS5mb3VuZGF0aW9uLmFydW5kby5jb20iLCJodHRwczovL2RvbWFpbi5mb3VuZGF0aW9uLmFydW5kby5jb20iXSwiaXNzIjoiaHR0cHM6Ly9mb3VuZGF0aW9uLmFydW5kby5jb20iLCJzdWIiOiJzdXBwb3J0QGFydW5kby5jb20ifQ.qM5aTdWx66ObQ1yoq8cNZoAn3bcJt7iSAz6x_oGG2Aw";
         string requestBody = @"{
             ""entrypoints"": [{
                 ""id"": ""045a5a9a-a4c2-42f3-a2c9-c5f5f2d62750""
