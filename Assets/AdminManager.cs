@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-
+using System.Collections.Generic;
 public class AdminManager : MonoBehaviour
 {
     [SerializeField] private string domainID = "";
@@ -9,6 +9,12 @@ public class AdminManager : MonoBehaviour
     [SerializeField] private TMP_InputField domainIDInput;
     [SerializeField] private TMP_InputField bearerTokenInput;
     [SerializeField] private TMP_InputField rootAssetIDInput;
+    [SerializeField] private TMP_Dropdown rootAssetDropdown;
+    [SerializeField] private GraphManager graphManager;
+    private RootAssetsFetcher rootAssetsFetcher;
+
+    // Maps the index of the dropdown to the root asset ID
+    private Dictionary<int, string> rootAssetIDdMapping = new Dictionary<int, string>();
 
     public string DomainID => domainID;
     public string BearerToken => bearerToken;
@@ -61,7 +67,18 @@ public class AdminManager : MonoBehaviour
         if (rootAssetIDInput != null)
         {
             rootAssetIDInput.SetTextWithoutNotify(rootAssetID);
-            rootAssetIDInput.onValueChanged.AddListener(OnRootAssetIDChanged);
+            // rootAssetIDInput.onValueChanged.AddListener(OnRootAssetIDChanged);
+        }
+
+        if (rootAssetDropdown != null)
+        {
+            rootAssetsFetcher = rootAssetDropdown.GetComponent<RootAssetsFetcher>();
+            if (rootAssetsFetcher == null)
+            {
+                Debug.LogWarning("RootAssetsFetcher component not found on rootAssetDropdown");
+            }
+            rootAssetDropdown.onValueChanged.AddListener(OnRootAssetDropdownChanged);
+            rootAssetDropdown.options.Clear();
         }
     }
 
@@ -73,11 +90,36 @@ public class AdminManager : MonoBehaviour
     private void OnBearerTokenChanged(string newValue)
     {
         bearerToken = newValue;
+        if (rootAssetsFetcher != null)
+        {
+            rootAssetsFetcher.UpdateBearerToken(bearerToken);
+        }
     }
 
-    private void OnRootAssetIDChanged(string newValue)
+    // private void OnRootAssetIDChanged(string newValue)
+    // {
+    //     rootAssetID = newValue;
+    // }
+
+    private void OnRootAssetDropdownChanged(int newValue)
     {
-        rootAssetID = newValue;
+        rootAssetID = rootAssetIDdMapping[newValue];
+
+        // Update the TMP input field with the new root asset ID
+        if (rootAssetIDInput != null)
+        {
+            rootAssetIDInput.SetTextWithoutNotify(rootAssetID);
+        }
+
+        // Rebuild the graph
+        if (graphManager != null)
+        {
+            graphManager.RebuildGraph();
+        }
+        else
+        {
+            Debug.LogWarning("GraphManager reference not set in AdminManager");
+        }
     }
 
     private void OnDestroy()
@@ -91,9 +133,29 @@ public class AdminManager : MonoBehaviour
         {
             bearerTokenInput.onValueChanged.RemoveListener(OnBearerTokenChanged);
         }
-        if (rootAssetIDInput != null)
+
+        if (rootAssetDropdown != null)
         {
-            rootAssetIDInput.onValueChanged.RemoveListener(OnRootAssetIDChanged);
+            rootAssetDropdown.onValueChanged.RemoveListener(OnRootAssetDropdownChanged);
         }
+
+        // if (rootAssetIDInput != null)
+        // {
+        //     rootAssetIDInput.onValueChanged.RemoveListener(OnRootAssetIDChanged);
+        // }
+    }
+
+    public void AddRootAssetMapping(int index, string rootAssetId)
+    {
+        if (rootAssetIDdMapping == null)
+        {
+            rootAssetIDdMapping = new Dictionary<int, string>();
+        }
+        rootAssetIDdMapping[index] = rootAssetId;
+    }
+
+    public void ClearRootAssetMappings()
+    {
+        rootAssetIDdMapping.Clear();
     }
 }

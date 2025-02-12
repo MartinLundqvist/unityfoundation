@@ -1,0 +1,110 @@
+{
+    "vertices": [
+      {
+        "name": "Amber",
+        "id": "045a5a9a-a4c2-42f3-a2c9-c5f5f2d62750",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Ranger",
+        "id": "14eefe86-a0d4-4a20-bb08-3d188fdeee35",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Aurora",
+        "id": "15cf7b0f-39f9-42d0-a5cc-91479f43b0ab",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Rainbow",
+        "id": "1f65c34f-a484-4052-b217-612f5f8c286a",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Vigilant",
+        "id": "20b6d519-61c8-41e8-a637-26c810a6fe90",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Freedom",
+        "id": "4499c900-f8e1-4fbb-8c6f-d6295d683e0a",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Enterprise",
+        "id": "4ce3796a-977e-4a41-a6bb-1755dfca2fcf",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Resolute",
+        "id": "520bd18e-63ff-4814-9f8c-7733f09a0d8e",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Volunteer",
+        "id": "62f72714-c3e9-4f72-92e9-210758d73671",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Courageous",
+        "id": "88c54603-119a-4b72-a8ff-d908c5841b07",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Constellation",
+        "id": "91298495-10c1-4eca-a27f-3a72643e655a",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Artemis",
+        "id": "a3eedd0e-3c90-4cf5-af19-19a18f243c48",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      },
+      {
+        "name": "Endeavour",
+        "id": "eb424140-7047-4dbb-8213-e7575c2f22d9",
+        "validated": true,
+        "type": "Asset",
+        "attributes": [],
+        "attributeSpecifications": []
+      }
+    ],
+    "relationships": [],
+    "identifiablePaths": []
+  }
