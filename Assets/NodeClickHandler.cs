@@ -59,6 +59,7 @@ public class NodeClickHandler : MonoBehaviour
                     // If the node is a sensor, show the time series graph.
                     if (nodeInfo.nodeType == "sensor")
                     {
+                        Debug.Log("Showing time series graph for sensor: " + nodeInfo.nodeName);
                         ShowTimeSeriesGraph(nodeInfo);
                     }
                     else

@@ -45,11 +45,11 @@ public class ForceDirectedGraphManager : MonoBehaviour
 
     public void InitializeGraph(Graph inputGraph)
     {
-        if (isSimulating)
-        {
-            Debug.LogWarning("Cannot initialize new graph while simulation is running");
-            return;
-        }
+        // if (isSimulating)
+        // {
+        //     Debug.LogWarning("Cannot initialize new graph while simulation is running");
+        //     return;
+        // }
 
         Debug.Log("Initializing graph with " + inputGraph.GetAllNodes().Count + " nodes");
         graph = inputGraph;
@@ -127,7 +127,7 @@ public class ForceDirectedGraphManager : MonoBehaviour
         int iteration = 0;
         float totalMovement = float.MaxValue;
 
-        while (isSimulating && iteration < maxIterations && totalMovement > convergenceThreshold)
+        while (/*isSimulating &&*/ iteration < maxIterations && totalMovement > convergenceThreshold)
         {
             totalMovement = UpdateNodePositions();
             UpdateVisualization();
@@ -230,39 +230,46 @@ public class ForceDirectedGraphManager : MonoBehaviour
 
     private void CreateNodeObject(GraphNode node)
     {
-        // Use the existing node creation logic from GraphManager
-        GameObject prefabToUse = null;
+        GameObject prefabToUse = nodePrefab;
         Material materialToUse = nodeMaterial;
+        string type = node.nodeType.ToLower();
 
-        switch (node.nodeType.ToLower())
+        switch (type)
         {
             case "root":
-                prefabToUse = rootPrefab;
-                materialToUse = rootMaterial;
+                prefabToUse = rootPrefab != null ? rootPrefab : nodePrefab;
+                materialToUse = rootMaterial != null ? rootMaterial : nodeMaterial;
                 break;
             case "sensor":
-                prefabToUse = sensorPrefab;
-                materialToUse = sensorMaterial;
+                prefabToUse = sensorPrefab != null ? sensorPrefab : nodePrefab;
+                materialToUse = sensorMaterial != null ? sensorMaterial : nodeMaterial;
                 break;
             case "asset":
-                prefabToUse = assetPrefab;
-                materialToUse = assetMaterial;
+                prefabToUse = assetPrefab != null ? assetPrefab : nodePrefab;
+                materialToUse = assetMaterial != null ? assetMaterial : nodeMaterial;
                 break;
             case "compute":
-                prefabToUse = computePrefab;
-                materialToUse = computeMaterial;
+                prefabToUse = computePrefab != null ? computePrefab : nodePrefab;
+                materialToUse = computeMaterial != null ? computeMaterial : nodeMaterial;
                 break;
         }
 
-        if (prefabToUse == null)
-        {
-            prefabToUse = nodePrefab != null ? nodePrefab : GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        }
+        // if (prefabToUse == null)
+        // {
+        //     prefabToUse = nodePrefab != null ? nodePrefab : GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        // }
 
         GameObject nodeObj = Instantiate(prefabToUse, nodeData[node].position, Quaternion.identity, transform);
         nodeData[node].gameObject = nodeObj;
 
         nodeObj.name = $"Node {node.id} ({node.nodeType})";
+
+        // Set the node name text if there's a TextMeshPro component in children
+        TMPro.TextMeshPro textComponent = nodeObj.GetComponentInChildren<TMPro.TextMeshPro>();
+        if (textComponent != null)
+        {
+            textComponent.text = node.name;
+        }
 
         Renderer renderer = nodeObj.GetComponent<Renderer>();
         if (renderer != null)
@@ -270,11 +277,11 @@ public class ForceDirectedGraphManager : MonoBehaviour
             renderer.material = materialToUse;
         }
 
-        // Set up node info component
+        // Get NodeInfo component (should already be on the prefab)
         NodeInfo nodeInfo = nodeObj.GetComponent<NodeInfo>();
         if (nodeInfo != null)
         {
-            nodeInfo.nodeType = node.nodeType;
+            nodeInfo.nodeType = node.nodeType.ToLower();
             nodeInfo.nodeID = node.id;
             nodeInfo.nodeName = node.name;
 
@@ -285,6 +292,10 @@ public class ForceDirectedGraphManager : MonoBehaviour
                     nodeInfo.attributes[attr.Key] = attr.Value;
                 }
             }
+        }
+        else
+        {
+            Debug.LogWarning($"NodeInfo component missing on prefab for node {node.id}");
         }
     }
 

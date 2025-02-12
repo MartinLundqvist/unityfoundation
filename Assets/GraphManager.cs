@@ -8,6 +8,8 @@ public class GraphManager : MonoBehaviour
     // In‑memory graph instance (assume this uses your previously defined Graph class)
     public Graph graph;
 
+    /*
+
     // Prefab for rendering a node (e.g., a sphere). If not assigned, a primitive sphere will be created.
     public GameObject nodePrefab;
 
@@ -81,13 +83,21 @@ public class GraphManager : MonoBehaviour
         public float minX;             // Bounding box in X (minimum X among children positions).
         public float maxX;             // Bounding box in X (maximum X among children positions).
     }
+    
+
+    void Awake()
+    {
+        // Create a fallback prefab (sphere) if none is assigned
+        if (nodePrefab == null)
+        {
+            fallbackNodePrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            fallbackNodePrefab.SetActive(false); // Hide it
+        }
+    }
+    */
 
     void Start()
     {
-        // Create and cache the fallback prefab only once
-        fallbackNodePrefab = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        fallbackNodePrefab.SetActive(false);
-
         // Build the graph 
         GraphBuilder builder = GetComponent<GraphBuilder>();
 
@@ -105,6 +115,7 @@ public class GraphManager : MonoBehaviour
             }));
         }
     }
+    /*
 
     // New method to encapsulate the graph visualization logic
     private void BuildGraphVisualization()
@@ -509,7 +520,7 @@ public class GraphManager : MonoBehaviour
     }
 
     #endregion
-
+*/
     /// <summary>
     /// Clears and rebuilds the entire graph visualization.
     /// </summary>
@@ -521,7 +532,7 @@ public class GraphManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        computedPositions.Clear();
+        //computedPositions.Clear();
 
         // Rebuild the graph
         GraphBuilder builder = GetComponent<GraphBuilder>();
