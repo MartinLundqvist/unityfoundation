@@ -94,14 +94,14 @@ public class GraphManager : MonoBehaviour
         if (builder.useLocal)
         {
             graph = builder.BuildGraphFromJson();
-            BuildGraphVisualization();
+            GetComponent<ForceDirectedGraphManager>().InitializeGraph(graph);
         }
         else
         {
             StartCoroutine(builder.BuildGraphFromJsonAsync(graph =>
             {
                 this.graph = graph;
-                BuildGraphVisualization();
+                GetComponent<ForceDirectedGraphManager>().InitializeGraph(graph);
             }));
         }
     }
@@ -528,14 +528,14 @@ public class GraphManager : MonoBehaviour
         if (builder.useLocal)
         {
             graph = builder.BuildGraphFromJson();
-            BuildGraphVisualization();
+            GetComponent<ForceDirectedGraphManager>().InitializeGraph(graph);
         }
         else
         {
             StartCoroutine(builder.BuildGraphFromJsonAsync(graph =>
             {
                 this.graph = graph;
-                BuildGraphVisualization();
+                GetComponent<ForceDirectedGraphManager>().InitializeGraph(graph);
             }));
         }
     }

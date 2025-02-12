@@ -471,6 +471,7 @@ GameObject:
   - component: {fileID: 207930846}
   - component: {fileID: 207930845}
   - component: {fileID: 207930847}
+  - component: {fileID: 207930848}
   m_Layer: 0
   m_Name: GraphManager
   m_TagString: Untagged
@@ -537,6 +538,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jsonGraphData: {fileID: 4900000, guid: 6d1acebc9203248b59704cc376207ba2, type: 3}
   useLocal: 0
+--- !u!114 &207930848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 207930844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf69727de29f642ae8b03cf160246478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nodePrefab: {fileID: 5395236953694635719, guid: 883af8e5bc4d54b39b26e791cbbb77b3, type: 3}
+  nodeMaterial: {fileID: 2100000, guid: cddb4b687264f45de843bcfddf59e905, type: 2}
+  rootPrefab: {fileID: 0}
+  sensorPrefab: {fileID: 1264172783128867616, guid: 5fb61243c501d42ed8ef407c5d901c81, type: 3}
+  assetPrefab: {fileID: 0}
+  computePrefab: {fileID: 0}
+  rootMaterial: {fileID: 0}
+  sensorMaterial: {fileID: 2100000, guid: 71a92df1fea9a4346ae3a8c127e96302, type: 2}
+  assetMaterial: {fileID: 0}
+  computeMaterial: {fileID: 0}
+  lineMaterial: {fileID: 2100000, guid: fbe46a80e05274a1b9c5e9016f52ac27, type: 2}
+  repulsionForce: 50
+  springForce: 0.5
+  springLength: 5
+  damping: 0.8
+  timeStep: 0.1
+  maxIterations: 1000
+  convergenceThreshold: 0.01
 --- !u!1 &315473471
 GameObject:
   m_ObjectHideFlags: 0
@@ -4527,7 +4558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   domainID: f9a6e31b-c309-49b2-a81f-46c26f50dcc3
-  bearerToken: ...
+  bearerToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MzkzNzg2MjYsImV4cCI6MTczOTM4MjIyNiwiYXVkIjpbImh0dHBzOi8vZGF0YS5mb3VuZGF0aW9uLmFydW5kby5jb20iLCJodHRwczovL2RvbWFpbi5mb3VuZGF0aW9uLmFydW5kby5jb20iXSwiaXNzIjoiaHR0cHM6Ly9mb3VuZGF0aW9uLmFydW5kby5jb20iLCJzdWIiOiJzdXBwb3J0QGFydW5kby5jb20ifQ.MZFzZIK8lpmSx25SPdBBPIUJ3TNrbMPXXl5vXYXpHTc
   rootAssetID: 045a5a9a-a4c2-42f3-a2c9-c5f5f2d62750
   domainIDInput: {fileID: 1886546188}
   bearerTokenInput: {fileID: 1405390121}
