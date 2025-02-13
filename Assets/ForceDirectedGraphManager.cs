@@ -264,11 +264,35 @@ public class ForceDirectedGraphManager : MonoBehaviour
 
         nodeObj.name = $"Node {node.id} ({node.nodeType})";
 
-        // Set the node name text if there's a TextMeshPro component in children
-        TMPro.TextMeshPro textComponent = nodeObj.GetComponentInChildren<TMPro.TextMeshPro>();
-        if (textComponent != null)
+        // Only adjust cube height for asset nodes
+        if (type == "asset")
         {
-            textComponent.text = node.name;
+            // Get the LabelManager component
+            LabelManager labelManager = nodeObj.GetComponentInChildren<LabelManager>();
+            if (labelManager != null)
+            {
+                labelManager.SetLabel(node.name);
+            }
+            else
+            {
+                Debug.LogWarning($"LabelManager component missing on prefab for node {node.id}");
+            }
+            // // Get the TextMeshPro component
+            // TextMeshPro textMesh = nodeObj.GetComponentInChildren<TextMeshPro>();
+            // if (textMesh != null)
+            // {
+            //     textMesh.text = node.name;
+            //     textMesh.ForceMeshUpdate();
+
+            //     // Force layout update
+            //     var layoutGroup = textMesh.GetComponent<UnityEngine.UI.ContentSizeFitter>();
+            //     if (layoutGroup != null)
+            //     {
+            //         Canvas.ForceUpdateCanvases();
+            //         layoutGroup.SetLayoutHorizontal();
+            //         layoutGroup.SetLayoutVertical();
+            //     }
+            // }
         }
 
         Renderer renderer = nodeObj.GetComponent<Renderer>();
